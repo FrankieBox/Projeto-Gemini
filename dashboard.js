@@ -7,21 +7,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const fullNameInput = document.getElementById('full-name');
     const emailAddressInput = document.getElementById('email-address');
 
-    // Novo: Botão de voltar para a tabela
+    // Botão de voltar para a tabela
     const backToTableBtn = document.createElement('button');
     backToTableBtn.textContent = 'Voltar para Tabela';
     backToTableBtn.style.cssText = 'background-color: #f44336; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;';
-    
-    // Novo: Adiciona o botão de voltar ao formulário
     userForm.insertBefore(backToTableBtn, userForm.firstChild);
+
+    let users = [];
+    const storedUsers = localStorage.getItem('users');
+    if (storedUsers) {
+        users = JSON.parse(storedUsers);
+    } else {
+        // Dados de teste se não houverem usuários salvos
+        users = [
+            { id: 101, fullName: 'Ana Silva', email: 'ana.silva@email.com', status: 'Ativo' },
+            { id: 102, fullName: 'Carlos Rodrigues', email: 'carlos.r@email.com', status: 'Inativo' }
+        ];
+    }
+
+    // Função para renderizar a tabela
+    const renderTable = () => {
+        userTableBody.innerHTML = ''; // Limpa a tabela
+        users.forEach(user => {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td data-label="ID">${user.id}</td>
+                <td data-label="Nome Completo">${user.fullName}</td>
+                <td data-label="E-mail">${user.email}</td>
+                <td data-label="Status"><span class="status-badge ${user.status.toLowerCase()}">${user.status}</span></td>
+                <td data-label="Ações">
+                    <button class="action-btn edit-btn" data-id="${user.id}">Editar</button>
+                    <button class="action-btn delete-btn" data-id="${user.id}">Excluir</button>
+                </td>
+            `;
+            userTableBody.appendChild(newRow);
+        });
+    };
+
+    renderTable(); // Renderiza a tabela inicial
 
     // Mostra o formulário de cadastro e esconde a tabela
     if (addUserButton && userTable && userForm) {
         addUserButton.addEventListener('click', () => {
             userTable.style.display = 'none';
             userForm.style.display = 'block';
-            userForm.reset();
             submitFormBtn.textContent = 'Salvar Usuário';
+            fullNameInput.value = '';
+            emailAddressInput.value = '';
         });
     }
 
@@ -36,26 +68,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const newUserId = userTableBody.rows.length + 101; 
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td data-label="ID">${newUserId}</td>
-                <td data-label="Nome Completo">${fullName}</td>
-                <td data-label="E-mail">${emailAddress}</td>
-                <td data-label="Status"><span class="status-badge active">Ativo</span></td>
-                <td data-label="Ações">
-                    <button class="action-btn edit-btn">Editar</button>
-                    <button class="action-btn delete-btn">Excluir</button>
-                </td>
-            `;
-            
-            userTableBody.appendChild(newRow);
+            const newUserId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 101;
+            const newUser = {
+                id: newUserId,
+                fullName: fullName,
+                email: emailAddress,
+                status: 'Ativo'
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users)); // Salva os dados
+            renderTable();
 
             userForm.style.display = 'none';
             userTable.style.display = 'block';
-
-            fullNameInput.value = '';
-            emailAddressInput.value = '';
         });
     }
 
@@ -63,29 +89,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userTableBody) {
         userTableBody.addEventListener('click', (event) => {
             if (event.target.classList.contains('delete-btn')) {
-                event.target.closest('tr').remove();
+                const userId = parseInt(event.target.getAttribute('data-id'));
+                users = users.filter(user => user.id !== userId);
+                localStorage.setItem('users', JSON.stringify(users)); // Salva os dados
+                renderTable();
             } else if (event.target.classList.contains('edit-btn')) {
-                const row = event.target.closest('tr');
-                const fullName = row.querySelector('td:nth-child(2)').textContent;
-                const emailAddress = row.querySelector('td:nth-child(3)').textContent;
+                const userId = parseInt(event.target.getAttribute('data-id'));
+                const userToEdit = users.find(user => user.id === userId);
 
-                fullNameInput.value = fullName;
-                emailAddressInput.value = emailAddress;
-                submitFormBtn.textContent = 'Salvar Edição';
-                
-                userTable.style.display = 'none';
-                userForm.style.display = 'block';
+                if (userToEdit) {
+                    fullNameInput.value = userToEdit.fullName;
+                    emailAddressInput.value = userToEdit.email;
+                    submitFormBtn.textContent = 'Salvar Edição';
+                    
+                    userTable.style.display = 'none';
+                    userForm.style.display = 'block';
 
-                row.remove();
+                    users = users.filter(user => user.id !== userId);
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
             }
         });
     }
 
-    // Novo: Lida com o clique no botão de voltar
+    // Lida com o clique no botão de voltar
     if (backToTableBtn) {
         backToTableBtn.addEventListener('click', () => {
             userForm.style.display = 'none';
             userTable.style.display = 'block';
+            renderTable(); // Recarrega a tabela para garantir que esteja atualizada
         });
     }
 });
