@@ -9,4 +9,4 @@ document.addEventListener('DOMContentLoaded', () => {
             userForm.style.display = 'block';
         });
     }
-});
+});...
