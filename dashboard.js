@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToTableBtn = document.createElement('button');
     backToTableBtn.textContent = 'Voltar para Tabela';
     backToTableBtn.style.cssText = 'background-color: #f44336; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;';
+    
+    // Novo: Adiciona o botão de voltar ao formulário
     userForm.insertBefore(backToTableBtn, userForm.firstChild);
 
     // Mostra o formulário de cadastro e esconde a tabela
@@ -57,30 +59,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Novo: Lógica para os botões de Editar e Excluir
+    // Lógica para os botões de Editar e Excluir
     if (userTableBody) {
         userTableBody.addEventListener('click', (event) => {
             if (event.target.classList.contains('delete-btn')) {
-                // Remove a linha quando o botão 'Excluir' é clicado
                 event.target.closest('tr').remove();
             } else if (event.target.classList.contains('edit-btn')) {
-                // Lógica de edição
                 const row = event.target.closest('tr');
                 const fullName = row.querySelector('td:nth-child(2)').textContent;
                 const emailAddress = row.querySelector('td:nth-child(3)').textContent;
 
-                // Preenche o formulário com os dados da linha
                 fullNameInput.value = fullName;
                 emailAddressInput.value = emailAddress;
                 submitFormBtn.textContent = 'Salvar Edição';
                 
-                // Mostra o formulário e esconde a tabela
                 userTable.style.display = 'none';
                 userForm.style.display = 'block';
 
-                // Remove a linha antiga (você pode fazer isso de forma mais inteligente depois)
                 row.remove();
             }
+        });
+    }
+
+    // Novo: Lida com o clique no botão de voltar
+    if (backToTableBtn) {
+        backToTableBtn.addEventListener('click', () => {
+            userForm.style.display = 'none';
+            userTable.style.display = 'block';
         });
     }
 });
