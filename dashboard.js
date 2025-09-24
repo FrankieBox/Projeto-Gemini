@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const addUserButton = document.querySelector('.add-user-btn');
     const userTable = document.querySelector('.table-container');
+    const userForm = document.getElementById('add-user-form');
 
-    if (addUserButton && userTable) {
+    if (addUserButton && userTable && userForm) {
         addUserButton.addEventListener('click', () => {
             userTable.style.display = 'none';
-            // Em seguida, criaremos um formulário para aparecer aqui
-            document.body.innerHTML += '<h2>Formulário de cadastro aqui</h2>';
+            userForm.style.display = 'block';
         });
     }
 });
