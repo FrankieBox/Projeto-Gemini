@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const addUserButton = document.querySelector('.add-user-btn');
     const userTable = document.querySelector('.table-container');
-    const userForm = document.getElementById('add-user-form');
+    const userForm = document.getElementById('add-user-form'); 
 
     if (addUserButton && userTable && userForm) {
         addUserButton.addEventListener('click', () => {
@@ -9,4 +9,4 @@ document.addEventListener('DOMContentLoaded', () => {
             userForm.style.display = 'block';
         });
     }
-});...
+});
