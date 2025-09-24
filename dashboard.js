@@ -14,17 +14,23 @@ document.addEventListener('DOMContentLoaded', () => {
     userForm.insertBefore(backToTableBtn, userForm.firstChild);
 
     let users = [];
-    const storedUsers = localStorage.getItem('users');
-    if (storedUsers) {
-        users = JSON.parse(storedUsers);
-    } else {
-        // Dados de teste se não houverem usuários salvos
-        users = [
-            { id: 101, fullName: 'Ana Silva', email: 'ana.silva@email.com', status: 'Ativo' },
-            { id: 102, fullName: 'Carlos Rodrigues', email: 'carlos.r@email.com', status: 'Inativo' }
-        ];
-    }
+    let editingId = null;
 
+    // Função para carregar usuários do localStorage
+    const loadUsers = () => {
+        const storedUsers = localStorage.getItem('users');
+        if (storedUsers) {
+            users = JSON.parse(storedUsers);
+        } else {
+            // Dados de teste se não houverem usuários salvos
+            users = [
+                { id: 101, fullName: 'Ana Silva', email: 'ana.silva@email.com', status: 'Ativo' },
+                { id: 102, fullName: 'Carlos Rodrigues', email: 'carlos.r@email.com', status: 'Inativo' }
+            ];
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+    };
+    
     // Função para renderizar a tabela
     const renderTable = () => {
         userTableBody.innerHTML = ''; // Limpa a tabela
@@ -44,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    loadUsers(); // Carrega os usuários ao iniciar
     renderTable(); // Renderiza a tabela inicial
 
     // Mostra o formulário de cadastro e esconde a tabela
@@ -54,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitFormBtn.textContent = 'Salvar Usuário';
             fullNameInput.value = '';
             emailAddressInput.value = '';
+            editingId = null; // Reinicia o ID de edição
         });
     }
 
@@ -68,15 +76,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const newUserId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 101;
-            const newUser = {
-                id: newUserId,
-                fullName: fullName,
-                email: emailAddress,
-                status: 'Ativo'
-            };
+            if (editingId !== null) {
+                // Lógica de edição
+                const userIndex = users.findIndex(user => user.id === editingId);
+                if (userIndex !== -1) {
+                    users[userIndex].fullName = fullName;
+                    users[userIndex].email = emailAddress;
+                }
+            } else {
+                // Lógica de novo usuário
+                const newUserId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 101;
+                const newUser = {
+                    id: newUserId,
+                    fullName: fullName,
+                    email: emailAddress,
+                    status: 'Ativo'
+                };
+                users.push(newUser);
+            }
 
-            users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users)); // Salva os dados
             renderTable();
 
@@ -104,9 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     userTable.style.display = 'none';
                     userForm.style.display = 'block';
-
-                    users = users.filter(user => user.id !== userId);
-                    localStorage.setItem('users', JSON.stringify(users));
+                    editingId = userId;
                 }
             }
         });
