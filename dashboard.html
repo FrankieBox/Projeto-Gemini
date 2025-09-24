@@ -95,6 +95,28 @@
         .status-badge.inactive {
             background-color: #dc3545;
         }
+        
+        .status-toggle-btn {
+            width: 100%;
+            background-color: var(--background-color);
+            color: var(--secondary-color);
+            border: 1px solid #ccc;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .status-toggle-btn.active {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .status-toggle-btn.inactive {
+            background-color: #dc3545;
+            color: #fff;
+        }
 
         /* Estilos do formulário */
         .form-container {
@@ -210,28 +232,7 @@
                         <th>Ações</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td data-label="ID">101</td>
-                        <td data-label="Nome Completo">Ana Silva</td>
-                        <td data-label="E-mail">ana.silva@email.com</td>
-                        <td data-label="Status"><span class="status-badge active">Ativo</span></td>
-                        <td data-label="Ações">
-                            <button class="action-btn edit-btn">Editar</button>
-                            <button class="action-btn delete-btn">Excluir</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td data-label="ID">102</td>
-                        <td data-label="Nome Completo">Carlos Rodrigues</td>
-                        <td data-label="E-mail">carlos.r@email.com</td>
-                        <td data-label="Status"><span class="status-badge inactive">Inativo</span></td>
-                        <td data-label="Ações">
-                            <button class="action-btn edit-btn">Editar</button>
-                            <button class="action-btn delete-btn">Excluir</button>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
 
@@ -239,6 +240,7 @@
             <h2>Adicionar Novo Usuário</h2>
             <input type="text" placeholder="Nome Completo" id="full-name">
             <input type="email" placeholder="E-mail" id="email-address">
+            <button id="status-toggle-btn" class="status-toggle-btn">Ativo</button>
             <button id="submit-form-btn">Salvar Usuário</button>
         </div>
     </div>
