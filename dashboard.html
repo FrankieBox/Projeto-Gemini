@@ -5,10 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projeto Gemini - Dashboard</title>
     <style>
-        /* CSS será adicionado aqui */
+        :root {
+            --primary-color: #004d99;
+            --secondary-color: #555;
+            --background-color: #f0f2f5;
+            --card-background: #fff;
+            --border-radius: 8px;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--card-background);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: #000;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .add-user-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-user-btn:hover {
+            background-color: #003366;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        table th, table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table th {
+            font-weight: bold;
+            color: #000;
+            background-color: #f9f9f9;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .status-badge.active {
+            background-color: #28a745;
+        }
+
+        .status-badge.inactive {
+            background-color: #dc3545;
+        }
     </style>
 </head>
 <body>
-    <h1>Bem-vindo à Dashboard!</h1>
-    </body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Gerenciamento de Usuários</h1>
+            <button class="add-user-btn">+ Adicionar Novo Usuário</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome Completo</th>
+                        <th>E-mail</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>101</td>
+                        <td>Ana Silva</td>
+                        <td>ana.silva@email.com</td>
+                        <td><span class="status-badge active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn">Editar</button>
+                            <button class="action-btn">Excluir</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>102</td>
+                        <td>Carlos Rodrigues</td>
+                        <td>carlos.r@email.com</td>
+                        <td><span class="status-badge inactive">Inativo</span></td>
+                        <td>
+                            <button class="action-btn">Editar</button>
+                            <button class="action-btn">Excluir</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
 </html>
