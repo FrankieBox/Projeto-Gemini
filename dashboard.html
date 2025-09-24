@@ -95,6 +95,68 @@
         .status-badge.inactive {
             background-color: #dc3545;
         }
+
+        /* Estilos de responsividade para celulares */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .add-user-btn {
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 1rem;
+                border-radius: var(--border-radius);
+            }
+            
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+
+            td:before {
+                position: absolute;
+                top: 0.5rem;
+                left: 0.5rem;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: bold;
+                content: attr(data-label);
+            }
+
+            td:nth-of-type(1):before { content: "ID"; }
+            td:nth-of-type(2):before { content: "Nome"; }
+            td:nth-of-type(3):before { content: "E-mail"; }
+            td:nth-of-type(4):before { content: "Status"; }
+            td:nth-of-type(5):before { content: "Ações"; }
+        }
     </style>
 </head>
 <body>
@@ -118,21 +180,21 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>101</td>
-                        <td>Ana Silva</td>
-                        <td>ana.silva@email.com</td>
-                        <td><span class="status-badge active">Ativo</span></td>
-                        <td>
+                        <td data-label="ID">101</td>
+                        <td data-label="Nome Completo">Ana Silva</td>
+                        <td data-label="E-mail">ana.silva@email.com</td>
+                        <td data-label="Status"><span class="status-badge active">Ativo</span></td>
+                        <td data-label="Ações">
                             <button class="action-btn">Editar</button>
                             <button class="action-btn">Excluir</button>
                         </td>
                     </tr>
                     <tr>
-                        <td>102</td>
-                        <td>Carlos Rodrigues</td>
-                        <td>carlos.r@email.com</td>
-                        <td><span class="status-badge inactive">Inativo</span></td>
-                        <td>
+                        <td data-label="ID">102</td>
+                        <td data-label="Nome Completo">Carlos Rodrigues</td>
+                        <td data-label="E-mail">carlos.r@email.com</td>
+                        <td data-label="Status"><span class="status-badge inactive">Inativo</span></td>
+                        <td data-label="Ações">
                             <button class="action-btn">Editar</button>
                             <button class="action-btn">Excluir</button>
                         </td>
