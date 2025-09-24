@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userTableBody = document.querySelector('tbody');
     const fullNameInput = document.getElementById('full-name');
     const emailAddressInput = document.getElementById('email-address');
+    const statusToggleBtn = document.getElementById('status-toggle-btn');
 
     // Botão de voltar para a tabela
     const backToTableBtn = document.createElement('button');
@@ -50,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    loadUsers(); // Carrega os usuários ao iniciar
-    renderTable(); // Renderiza a tabela inicial
+    loadUsers(); 
+    renderTable();
 
     // Mostra o formulário de cadastro e esconde a tabela
     if (addUserButton && userTable && userForm) {
@@ -61,7 +62,25 @@ document.addEventListener('DOMContentLoaded', () => {
             submitFormBtn.textContent = 'Salvar Usuário';
             fullNameInput.value = '';
             emailAddressInput.value = '';
-            editingId = null; // Reinicia o ID de edição
+            statusToggleBtn.textContent = 'Ativo';
+            statusToggleBtn.classList.remove('inactive');
+            statusToggleBtn.classList.add('active');
+            editingId = null;
+        });
+    }
+
+    // Lida com o clique no botão de status
+    if (statusToggleBtn) {
+        statusToggleBtn.addEventListener('click', () => {
+            if (statusToggleBtn.textContent === 'Ativo') {
+                statusToggleBtn.textContent = 'Inativo';
+                statusToggleBtn.classList.remove('active');
+                statusToggleBtn.classList.add('inactive');
+            } else {
+                statusToggleBtn.textContent = 'Ativo';
+                statusToggleBtn.classList.remove('inactive');
+                statusToggleBtn.classList.add('active');
+            }
         });
     }
 
@@ -70,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         submitFormBtn.addEventListener('click', () => {
             const fullName = fullNameInput.value;
             const emailAddress = emailAddressInput.value;
+            const status = statusToggleBtn.textContent;
 
             if (fullName.trim() === '' || emailAddress.trim() === '') {
                 alert('Por favor, preencha todos os campos.');
@@ -77,25 +97,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (editingId !== null) {
-                // Lógica de edição
                 const userIndex = users.findIndex(user => user.id === editingId);
                 if (userIndex !== -1) {
                     users[userIndex].fullName = fullName;
                     users[userIndex].email = emailAddress;
+                    users[userIndex].status = status;
                 }
             } else {
-                // Lógica de novo usuário
                 const newUserId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 101;
                 const newUser = {
                     id: newUserId,
                     fullName: fullName,
                     email: emailAddress,
-                    status: 'Ativo'
+                    status: status
                 };
                 users.push(newUser);
             }
 
-            localStorage.setItem('users', JSON.stringify(users)); // Salva os dados
+            localStorage.setItem('users', JSON.stringify(users));
             renderTable();
 
             userForm.style.display = 'none';
@@ -109,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (event.target.classList.contains('delete-btn')) {
                 const userId = parseInt(event.target.getAttribute('data-id'));
                 users = users.filter(user => user.id !== userId);
-                localStorage.setItem('users', JSON.stringify(users)); // Salva os dados
+                localStorage.setItem('users', JSON.stringify(users));
                 renderTable();
             } else if (event.target.classList.contains('edit-btn')) {
                 const userId = parseInt(event.target.getAttribute('data-id'));
@@ -119,6 +138,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     fullNameInput.value = userToEdit.fullName;
                     emailAddressInput.value = userToEdit.email;
                     submitFormBtn.textContent = 'Salvar Edição';
+                    
+                    if (userToEdit.status === 'Ativo') {
+                        statusToggleBtn.textContent = 'Ativo';
+                        statusToggleBtn.classList.remove('inactive');
+                        statusToggleBtn.classList.add('active');
+                    } else {
+                        statusToggleBtn.textContent = 'Inativo';
+                        statusToggleBtn.classList.remove('active');
+                        statusToggleBtn.classList.add('inactive');
+                    }
                     
                     userTable.style.display = 'none';
                     userForm.style.display = 'block';
@@ -133,7 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         backToTableBtn.addEventListener('click', () => {
             userForm.style.display = 'none';
             userTable.style.display = 'block';
-            renderTable(); // Recarrega a tabela para garantir que esteja atualizada
+            editingId = null; // Reinicia o ID de edição
+            renderTable();
         });
     }
 });
