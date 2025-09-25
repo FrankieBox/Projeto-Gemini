@@ -149,6 +149,13 @@
             background-color: #003366;
         }
 
+        .back-to-table-btn {
+            background-color: #f44336;
+        }
+        .back-to-table-btn:hover {
+            background-color: #d32f2f;
+        }
+
 
         /* Estilos de responsividade para celulares */
         @media (max-width: 768px) {
@@ -238,6 +245,7 @@
 
         <div class="form-container" id="add-user-form">
             <h2>Adicionar Novo Usuário</h2>
+            <button class="back-to-table-btn">Voltar para Tabela</button>
             <input type="text" placeholder="Nome Completo" id="full-name">
             <input type="email" placeholder="E-mail" id="email-address">
             <button id="status-toggle-btn" class="status-toggle-btn">Ativo</button>
