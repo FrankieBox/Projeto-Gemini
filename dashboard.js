@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailAddressInput = document.getElementById('email-address');
     const statusToggleBtn = document.getElementById('status-toggle-btn');
 
-    // Botão de voltar para a tabela
     const backToTableBtn = document.createElement('button');
     backToTableBtn.textContent = 'Voltar para Tabela';
     backToTableBtn.style.cssText = 'background-color: #f44336; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;';
@@ -17,13 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let users = [];
     let editingId = null;
 
-    // Função para carregar usuários do localStorage
     const loadUsers = () => {
         const storedUsers = localStorage.getItem('users');
         if (storedUsers) {
             users = JSON.parse(storedUsers);
         } else {
-            // Dados de teste se não houverem usuários salvos
             users = [
                 { id: 101, fullName: 'Ana Silva', email: 'ana.silva@email.com', status: 'Ativo' },
                 { id: 102, fullName: 'Carlos Rodrigues', email: 'carlos.r@email.com', status: 'Inativo' }
@@ -32,9 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // Função para renderizar a tabela
     const renderTable = () => {
-        userTableBody.innerHTML = ''; // Limpa a tabela
+        userTableBody.innerHTML = '';
         users.forEach(user => {
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
@@ -54,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUsers(); 
     renderTable();
 
-    // Mostra o formulário de cadastro e esconde a tabela
     if (addUserButton && userTable && userForm) {
         addUserButton.addEventListener('click', () => {
             userTable.style.display = 'none';
@@ -69,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Lida com o clique no botão de status
     if (statusToggleBtn) {
         statusToggleBtn.addEventListener('click', () => {
             if (statusToggleBtn.textContent === 'Ativo') {
@@ -84,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Lida com o envio do formulário
     if (submitFormBtn) {
         submitFormBtn.addEventListener('click', () => {
             const fullName = fullNameInput.value;
@@ -122,7 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Lógica para os botões de Editar e Excluir
     if (userTableBody) {
         userTableBody.addEventListener('click', (event) => {
             if (event.target.classList.contains('delete-btn')) {
@@ -157,12 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Lida com o clique no botão de voltar
     if (backToTableBtn) {
         backToTableBtn.addEventListener('click', () => {
             userForm.style.display = 'none';
             userTable.style.display = 'block';
-            editingId = null; // Reinicia o ID de edição
+            editingId = null;
             renderTable();
         });
     }
